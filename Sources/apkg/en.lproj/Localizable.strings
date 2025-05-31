@@ -1,0 +1,37 @@
+"Usage: apkg <command> [package]" = "Usage: apkg <command> [package]";
+"Package name required" = "Package name required";
+"Search query required" = "Search query required";
+"Unknown command: %@" = "Unknown command: %@";
+
+"APKG - macOS package manager" = "APKG - macOS package manager";
+"Usage:" = "Usage:";
+"Commands:" = "Commands:";
+"install <package>    Install package" = "install <package>    Install package";
+"remove <package>     Remove package" = "remove <package>     Remove package";
+"list                 List installed packages" = "list                 List installed packages";
+"search <query>       Search packages" = "search <query>       Search packages";
+"info <package>       Show package info" = "info <package>       Show package info";
+"update               Update packages" = "update               Update packages";
+"help                 Show this help" = "help                 Show this help";
+"Note: All commands require sudo privileges" = "Note: All commands require sudo privileges";
+
+"Package %@ is already installed" = "Package %@ is already installed";
+"Package file not found: %@" = "Package file not found: %@";
+"Invalid package: %@" = "Invalid package: %@";
+"Package checksum verification failed: %@" = "Package checksum verification failed: %@";
+"Pre-install script failed: %@" = "Pre-install script failed: %@";
+"Failed to extract package: %@" = "Failed to extract package: %@";
+"Post-install script failed: %@" = "Post-install script failed: %@";
+"Successfully installed %@ %@" = "Successfully installed %@ %@";
+
+"Package %@ is not installed" = "Package %@ is not installed";
+"Pre-deinstall script failed: %@" = "Pre-deinstall script failed: %@";
+"Post-deinstall script failed: %@" = "Post-deinstall script failed: %@";
+"Successfully removed %@ %@" = "Successfully removed %@ %@";
+
+"Package: %@" = "Package: %@";
+"Version: %@" = "Version: %@";
+"Installed: %@" = "Installed: %@";
+
+"Updating %@ from %@ to %@" = "Updating %@ from %@ to %@";
+"Failed to read packages directory" = "Failed to read packages directory"; 

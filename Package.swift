@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "apkg",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v13)
     ],
@@ -13,7 +14,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "apkg",
-            dependencies: []
+            dependencies: [],
+            resources: [
+                .process("ru.lproj")
+            ]
         )
     ]
 ) 

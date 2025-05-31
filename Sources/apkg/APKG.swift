@@ -80,9 +80,22 @@ class APKG {
         }
     }
     
+    private func getPackageVersion(_ package: String) -> String? {
+        let pkgPath = "\(basePath)/packages/\(package).apkgpkg"
+        let manifestPath = "\(pkgPath)/manifest.json"
+        
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: manifestPath)),
+              let manifest = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let version = manifest["version"] as? String else {
+            return nil
+        }
+        
+        return version
+    }
+    
     func install(_ package: String) {
         if installedPackages[package] != nil {
-            print("Package \(package) is already installed")
+            print(String(format: L10n.alreadyInstalled, package))
             return
         }
         
@@ -90,52 +103,58 @@ class APKG {
         let fm = FileManager.default
         
         if !fm.fileExists(atPath: pkgPath) {
-            print("Package file not found: \(pkgPath)")
+            print(String(format: L10n.packageNotFound, pkgPath))
             return
         }
         
-        let pkg = Package(name: package, version: "1.0")
+        guard let version = getPackageVersion(package) else {
+            print("Failed to get package version")
+            return
+        }
+        
+        let pkg = Package(name: package, version: version)
         if !pkg.validate() {
-            print("Invalid package: \(package)")
+            print(String(format: L10n.invalidPackage, package))
             return
         }
         
         if !pkg.verifyChecksum() {
-            print("Package checksum verification failed: \(package)")
+            print(String(format: L10n.checksumFailed, package))
             return
         }
         
         if !pkg.runScript("pre-install") {
-            print("Pre-install script failed: \(package)")
+            print(String(format: L10n.preInstallFailed, package))
             return
         }
         
         let installPath = "\(basePath)/\(package)"
         if !pkg.extractToPath(installPath) {
-            print("Failed to extract package: \(package)")
+            print(String(format: L10n.extractFailed, package))
             return
         }
         
         if !pkg.runScript("post-install") {
-            print("Post-install script failed: \(package)")
+            print(String(format: L10n.postInstallFailed, package))
             return
         }
         
         installedPackages[package] = pkg.toDictionary()
         saveDatabase()
-        print("Successfully installed \(package)")
+        print(String(format: L10n.installSuccess, package, version))
     }
     
     func remove(_ package: String) {
         guard let dict = installedPackages[package] else {
-            print("Package \(package) is not installed")
+            print(String(format: L10n.notInstalled, package))
             return
         }
         
-        let pkg = Package(name: package, version: dict["version"] as? String ?? "1.0")
+        let version = dict["version"] as? String ?? "unknown"
+        let pkg = Package(name: package, version: version)
         
         if !pkg.runScript("pre-deinstall") {
-            print("Pre-deinstall script failed: \(package)")
+            print(String(format: L10n.preDeinstallFailed, package))
             return
         }
         
@@ -144,18 +163,20 @@ class APKG {
         try? fm.removeItem(atPath: installPath)
         
         if !pkg.runScript("post-deinstall") {
-            print("Post-deinstall script failed: \(package)")
+            print(String(format: L10n.postDeinstallFailed, package))
             return
         }
         
         installedPackages.removeValue(forKey: package)
         saveDatabase()
-        print("Successfully removed \(package)")
+        print(String(format: L10n.removeSuccess, package, version))
     }
     
     func list() {
         for (package, info) in installedPackages {
-            print("\(package) (\(info["version"] as? String ?? "unknown"))")
+            let version = info["version"] as? String ?? "unknown"
+            let installed = info["installed"] as? String ?? "unknown"
+            print(String(format: "%@ %@ (installed: %@)", package, version, installed))
         }
     }
     
@@ -164,25 +185,31 @@ class APKG {
         let packagesPath = "\(basePath)/packages"
         
         guard let files = try? fm.contentsOfDirectory(atPath: packagesPath) else {
-            print("Failed to read packages directory")
+            print(L10n.readPackagesFailed)
             return
         }
         
         for file in files where file.hasSuffix(".apkgpkg") {
             let package = (file as NSString).deletingPathExtension
             if package.localizedCaseInsensitiveContains(query) {
-                print(package)
+                if let version = getPackageVersion(package) {
+                    print("\(package) \(version)")
+                } else {
+                    print(package)
+                }
             }
         }
     }
     
     func info(_ package: String) {
         if let info = installedPackages[package] {
-            print("Package: \(package)")
-            print("Version: \(info["version"] as? String ?? "unknown")")
-            print("Installed: \(info["installed"] as? String ?? "unknown")")
+            let version = info["version"] as? String ?? "unknown"
+            let installed = info["installed"] as? String ?? "unknown"
+            print(String(format: L10n.packageInfo, package))
+            print(String(format: L10n.versionInfo, version))
+            print(String(format: L10n.installedInfo, installed))
         } else {
-            print("Package \(package) is not installed")
+            print(String(format: L10n.notInstalled, package))
         }
     }
     
@@ -191,13 +218,19 @@ class APKG {
         let packagesPath = "\(basePath)/packages"
         
         guard let files = try? fm.contentsOfDirectory(atPath: packagesPath) else {
-            print("Failed to read packages directory")
+            print(L10n.readPackagesFailed)
             return
         }
         
         for file in files where file.hasSuffix(".apkgpkg") {
             let package = (file as NSString).deletingPathExtension
-            install(package)
+            if let installedInfo = installedPackages[package],
+               let installedVersion = installedInfo["version"] as? String,
+               let newVersion = getPackageVersion(package),
+               installedVersion != newVersion {
+                print(String(format: L10n.updateAvailable, package, installedVersion, newVersion))
+                install(package)
+            }
         }
     }
 } 

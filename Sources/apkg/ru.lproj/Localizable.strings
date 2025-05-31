@@ -1,0 +1,37 @@
+"Usage: apkg <command> [package]" = "Использование: apkg <команда> [пакет]";
+"Package name required" = "Требуется имя пакета";
+"Search query required" = "Требуется поисковый запрос";
+"Unknown command: %@" = "Неизвестная команда: %@";
+
+"APKG - macOS package manager" = "APKG - пакетный менеджер для macOS";
+"Usage:" = "Использование:";
+"Commands:" = "Команды:";
+"install <package>    Install package" = "install <пакет>    Установка пакета";
+"remove <package>     Remove package" = "remove <пакет>     Удаление пакета";
+"list                 List installed packages" = "list                 Список установленных пакетов";
+"search <query>       Search packages" = "search <запрос>    Поиск пакетов";
+"info <package>       Show package info" = "info <пакет>       Информация о пакете";
+"update               Update packages" = "update               Обновление пакетов";
+"help                 Show this help" = "help                 Показать эту справку";
+"Note: All commands require sudo privileges" = "Примечание: Все команды требуют прав суперпользователя (sudo)";
+
+"Package %@ is already installed" = "Пакет %@ уже установлен";
+"Package file not found: %@" = "Файл пакета не найден: %@";
+"Invalid package: %@" = "Неверный пакет: %@";
+"Package checksum verification failed: %@" = "Проверка контрольной суммы пакета не удалась: %@";
+"Pre-install script failed: %@" = "Скрипт предустановки не удался: %@";
+"Failed to extract package: %@" = "Не удалось распаковать пакет: %@";
+"Post-install script failed: %@" = "Скрипт постустановки не удался: %@";
+"Successfully installed %@ %@" = "Успешно установлен %@ %@";
+
+"Package %@ is not installed" = "Пакет %@ не установлен";
+"Pre-deinstall script failed: %@" = "Скрипт предудаления не удался: %@";
+"Post-deinstall script failed: %@" = "Скрипт постудаления не удался: %@";
+"Successfully removed %@ %@" = "Успешно удален %@ %@";
+
+"Package: %@" = "Пакет: %@";
+"Version: %@" = "Версия: %@";
+"Installed: %@" = "Установлен: %@";
+
+"Updating %@ from %@ to %@" = "Обновление %@ с %@ до %@";
+"Failed to read packages directory" = "Не удалось прочитать директорию пакетов"; 

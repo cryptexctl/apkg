@@ -17,11 +17,34 @@ class Package {
             return false
         }
         
-        return true
+        let manifestPath = "\(pkgPath)/manifest.json"
+        guard fm.fileExists(atPath: manifestPath) else {
+            return false
+        }
+        
+        do {
+            let data = try Data(contentsOf: URL(fileURLWithPath: manifestPath))
+            if let manifest = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let manifestVersion = manifest["version"] as? String {
+                return manifestVersion == version
+            }
+        } catch {
+            return false
+        }
+        
+        return false
     }
     
     func verifyChecksum() -> Bool {
         let pkgPath = "/opt/pkg/packages/\(name).apkgpkg"
+        let manifestPath = "\(pkgPath)/manifest.json"
+        
+        guard let manifestData = try? Data(contentsOf: URL(fileURLWithPath: manifestPath)),
+              let manifest = try? JSONSerialization.jsonObject(with: manifestData) as? [String: Any],
+              let expectedChecksum = manifest["checksum"] as? String else {
+            return false
+        }
+        
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/shasum")
         process.arguments = ["-a", "256", pkgPath]
@@ -43,7 +66,8 @@ class Package {
                 return false
             }
             
-            return true
+            let actualChecksum = components[0]
+            return actualChecksum == expectedChecksum
         } catch {
             return false
         }
