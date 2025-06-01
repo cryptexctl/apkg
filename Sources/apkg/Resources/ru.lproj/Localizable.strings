@@ -6,13 +6,17 @@
 "APKG - macOS package manager" = "APKG - пакетный менеджер для macOS";
 "Usage:" = "Использование:";
 "Commands:" = "Команды:";
-"install <package>    Install package" = "install <пакет>    Установка пакета";
-"remove <package>     Remove package" = "remove <пакет>     Удаление пакета";
-"list                 List installed packages" = "list                 Список установленных пакетов";
-"search <query>       Search packages" = "search <запрос>    Поиск пакетов";
-"info <package>       Show package info" = "info <пакет>       Информация о пакете";
-"update               Update packages" = "update               Обновление пакетов";
-"help                 Show this help" = "help                 Показать эту справку";
+"install <package>    Install package" = "install <пакет>     Установка пакета";
+"remove <package>     Remove package" = "remove <пакет>      Удаление пакета";
+"list                 List installed packages" = "list                  Список установленных пакетов";
+"search <query>       Search packages" = "search <запрос>     Поиск пакетов";
+"info <package>       Show package info" = "info <пакет>        Информация о пакете";
+"update               Update packages" = "update                Обновление пакетов";
+"help                 Show this help" = "help                  Показать эту справку";
+"register            Register with system" = "register             Регистрация в системе";
+"unregister          Unregister from system" = "unregister           Удаление из системы";
+"install-agent       Install update agent" = "install-agent        Установка агента обновления";
+"uninstall-agent     Uninstall update agent" = "uninstall-agent      Удаление агента обновления";
 "Note: All commands require sudo privileges" = "Примечание: Все команды требуют прав суперпользователя (sudo)";
 
 "Package %@ is already installed" = "Пакет %@ уже установлен";
@@ -34,4 +38,9 @@
 "Installed: %@" = "Установлен: %@";
 
 "Updating %@ from %@ to %@" = "Обновление %@ с %@ до %@";
-"Failed to read packages directory" = "Не удалось прочитать директорию пакетов"; 
+"Failed to read packages directory" = "Не удалось прочитать директорию пакетов";
+
+"System requirements not met: macOS 13.0 or newer required" = "Системные требования не выполнены: требуется macOS 11.0 или новее";
+"This command requires root privileges" = "Эта команда требует прав суперпользователя";
+"Successfully %@" = "Успешно %@";
+"Failed to %@" = "Не удалось %@"; 

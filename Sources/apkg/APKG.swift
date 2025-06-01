@@ -30,7 +30,7 @@ class APKG {
         installedPackages = [:]
         
         if !loadDatabase() {
-            print("Failed to load database")
+            print(L10n.readPackagesFailed)
             exit(1)
         }
     }
@@ -64,7 +64,7 @@ class APKG {
                 return true
             }
         } catch {
-            print("Failed to parse database: \(error)")
+            print(L10n.readPackagesFailed)
         }
         
         installedPackages = [:]
@@ -76,7 +76,7 @@ class APKG {
             let data = try JSONSerialization.data(withJSONObject: installedPackages)
             try data.write(to: URL(fileURLWithPath: dbPath))
         } catch {
-            print("Failed to save database: \(error)")
+            print(L10n.readPackagesFailed)
         }
     }
     
@@ -95,7 +95,7 @@ class APKG {
     
     func install(_ package: String) {
         if installedPackages[package] != nil {
-            print(String(format: L10n.alreadyInstalled, package))
+            print(L10n.alreadyInstalled(package))
             return
         }
         
@@ -103,50 +103,50 @@ class APKG {
         let fm = FileManager.default
         
         if !fm.fileExists(atPath: pkgPath) {
-            print(String(format: L10n.packageNotFound, pkgPath))
+            print(L10n.packageNotFound(pkgPath))
             return
         }
         
         guard let version = getPackageVersion(package) else {
-            print("Failed to get package version")
+            print(L10n.readPackagesFailed)
             return
         }
         
         let pkg = Package(name: package, version: version)
         if !pkg.validate() {
-            print(String(format: L10n.invalidPackage, package))
+            print(L10n.invalidPackage(package))
             return
         }
         
         if !pkg.verifyChecksum() {
-            print(String(format: L10n.checksumFailed, package))
+            print(L10n.checksumFailed(package))
             return
         }
         
         if !pkg.runScript("pre-install") {
-            print(String(format: L10n.preInstallFailed, package))
+            print(L10n.preInstallFailed(package))
             return
         }
         
         let installPath = "\(basePath)/\(package)"
         if !pkg.extractToPath(installPath) {
-            print(String(format: L10n.extractFailed, package))
+            print(L10n.extractFailed(package))
             return
         }
         
         if !pkg.runScript("post-install") {
-            print(String(format: L10n.postInstallFailed, package))
+            print(L10n.postInstallFailed(package))
             return
         }
         
         installedPackages[package] = pkg.toDictionary()
         saveDatabase()
-        print(String(format: L10n.installSuccess, package, version))
+        print(L10n.installSuccess(package, version))
     }
     
     func remove(_ package: String) {
         guard let dict = installedPackages[package] else {
-            print(String(format: L10n.notInstalled, package))
+            print(L10n.notInstalled(package))
             return
         }
         
@@ -154,7 +154,7 @@ class APKG {
         let pkg = Package(name: package, version: version)
         
         if !pkg.runScript("pre-deinstall") {
-            print(String(format: L10n.preDeinstallFailed, package))
+            print(L10n.preDeinstallFailed(package))
             return
         }
         
@@ -163,13 +163,13 @@ class APKG {
         try? fm.removeItem(atPath: installPath)
         
         if !pkg.runScript("post-deinstall") {
-            print(String(format: L10n.postDeinstallFailed, package))
+            print(L10n.postDeinstallFailed(package))
             return
         }
         
         installedPackages.removeValue(forKey: package)
         saveDatabase()
-        print(String(format: L10n.removeSuccess, package, version))
+        print(L10n.removeSuccess(package, version))
     }
     
     func list() {
@@ -205,11 +205,11 @@ class APKG {
         if let info = installedPackages[package] {
             let version = info["version"] as? String ?? "unknown"
             let installed = info["installed"] as? String ?? "unknown"
-            print(String(format: L10n.packageInfo, package))
-            print(String(format: L10n.versionInfo, version))
-            print(String(format: L10n.installedInfo, installed))
+            print(L10n.packageInfo(package))
+            print(L10n.versionInfo(version))
+            print(L10n.installedInfo(installed))
         } else {
-            print(String(format: L10n.notInstalled, package))
+            print(L10n.notInstalled(package))
         }
     }
     
@@ -228,7 +228,7 @@ class APKG {
                let installedVersion = installedInfo["version"] as? String,
                let newVersion = getPackageVersion(package),
                installedVersion != newVersion {
-                print(String(format: L10n.updateAvailable, package, installedVersion, newVersion))
+                print(L10n.updateAvailable(package, installedVersion, newVersion))
                 install(package)
             }
         }

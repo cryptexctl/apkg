@@ -5,19 +5,29 @@ let package = Package(
     name: "apkg",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v13)
+        .macOS(.v11)
     ],
     products: [
         .executable(name: "apkg", targets: ["apkg"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0")
+    ],
     targets: [
         .executableTarget(
             name: "apkg",
-            dependencies: [],
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ],
             resources: [
-                .process("ru.lproj")
+                .process("Resources/en.lproj"),
+                .process("Resources/ru.lproj")
             ]
+        ),
+        .testTarget(
+            name: "apkgTests",
+            dependencies: ["apkg"],
+            path: "Tests"
         )
     ]
 ) 

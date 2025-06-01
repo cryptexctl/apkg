@@ -66,7 +66,8 @@ APKG интегрируется с macOS следующими способами
 - `Sources/apkg/Package.swift` — класс для работы с пакетами
 - `Sources/apkg/Localization.swift` — локализация
 - `Sources/apkg/macOSIntegration.swift` — интеграция с macOS
-- `Sources/apkg/ru.lproj/Localizable.strings` — русская локализация
+- `Sources/apkg/Resources/en.lproj/Localizable.strings` — английская локализация
+- `Sources/apkg/Resources/ru.lproj/Localizable.strings` — русская локализация
 
 ## Лицензия
 

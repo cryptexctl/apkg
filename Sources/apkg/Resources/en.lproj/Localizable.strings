@@ -6,13 +6,17 @@
 "APKG - macOS package manager" = "APKG - macOS package manager";
 "Usage:" = "Usage:";
 "Commands:" = "Commands:";
-"install <package>    Install package" = "install <package>    Install package";
-"remove <package>     Remove package" = "remove <package>     Remove package";
-"list                 List installed packages" = "list                 List installed packages";
-"search <query>       Search packages" = "search <query>       Search packages";
-"info <package>       Show package info" = "info <package>       Show package info";
-"update               Update packages" = "update               Update packages";
-"help                 Show this help" = "help                 Show this help";
+"install <package>    Install package" = "install <package>     Install package";
+"remove <package>     Remove package" = "remove <package>      Remove package";
+"list                 List installed packages" = "list                  List installed packages";
+"search <query>       Search packages" = "search <query>        Search packages";
+"info <package>       Show package info" = "info <package>        Show package info";
+"update               Update packages" = "update                Update packages";
+"help                 Show this help" = "help                  Show this help";
+"register            Register with system" = "register             Register with system";
+"unregister          Unregister from system" = "unregister           Unregister from system";
+"install-agent       Install update agent" = "install-agent        Install update agent";
+"uninstall-agent     Uninstall update agent" = "uninstall-agent      Uninstall update agent";
 "Note: All commands require sudo privileges" = "Note: All commands require sudo privileges";
 
 "Package %@ is already installed" = "Package %@ is already installed";
@@ -34,4 +38,9 @@
 "Installed: %@" = "Installed: %@";
 
 "Updating %@ from %@ to %@" = "Updating %@ from %@ to %@";
-"Failed to read packages directory" = "Failed to read packages directory"; 
+"Failed to read packages directory" = "Failed to read packages directory";
+
+"System requirements not met: macOS 13.0 or newer required" = "System requirements not met: macOS 11.0 or newer required";
+"This command requires root privileges" = "This command requires root privileges";
+"Successfully %@" = "Successfully %@";
+"Failed to %@" = "Failed to %@"; 

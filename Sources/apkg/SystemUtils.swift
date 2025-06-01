@@ -13,9 +13,21 @@ enum SystemUtils {
     static var architecture: String {
         #if arch(arm64)
         return "arm64"
-        #else
+        #elseif arch(x86_64)
         return "x86_64"
+        #else
+        return "unknown"
         #endif
+    }
+    
+    static var isAppleSilicon: Bool {
+        return architecture == "arm64"
+    }
+    
+    static var isRunningUnderRosetta: Bool {
+        var ret = Int32(0)
+        var size = Int(MemoryLayout<Int32>.size)
+        return sysctlbyname("sysctl.proc_translated", &ret, &size, nil, 0) == 0 && ret == 1
     }
     
     static var systemVersion: String {
@@ -39,15 +51,32 @@ enum SystemUtils {
               let minor = Int(components[1]) else {
             return false
         }
-        return major >= 13
+        
+        if isAppleSilicon {
+            return major >= 11
+        } else {
+            return major >= 10 && minor >= 15
+        }
     }
     
     static func getSystemInfo() -> [String: String] {
         return [
             "language": systemLanguage,
             "architecture": architecture,
+            "isAppleSilicon": String(isAppleSilicon),
+            "isRosetta": String(isRunningUnderRosetta),
             "version": systemVersion,
             "isRoot": String(isRunningAsRoot)
         ]
+    }
+    
+    static func getCacheDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)
+        return paths[0].appendingPathComponent("apkg")
+    }
+    
+    static func getPackageDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        return paths[0].appendingPathComponent("apkg")
     }
 } 
